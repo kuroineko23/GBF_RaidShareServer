@@ -22,8 +22,16 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
 app.post('/sendcode', authMiddleware, (req, res) => {
-    io.to(req.body.roomId).emit("message", req.body)
-    res.sendStatus(200)
+    var regex = new RegExp("[A-F0-9]");
+    if(req.body.code.match(regex))
+    {
+        io.to(req.body.roomId).emit("message", req.body)
+        res.sendStatus(200);
+    }
+    else
+    {
+        res.send("not a raid code");
+    }
 })
 
 io.on("connection", async (socket) => {
