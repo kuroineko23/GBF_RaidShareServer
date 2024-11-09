@@ -24,7 +24,7 @@
     socket.on("message", (arg) => {
       document.getElementById('list').innerHTML = `<div style="width: 10vw; margin-bottom: 1vh">
       <a onclick="copyURI(this.name)" href="#" name="` + arg.code + `" style="width: 10vw">
-          <h3>` + arg.code + `- ` + arg.nickname + `</h3>
+          <h3>` + arg.code + " - " + arg.nickname + `</h3>
       </a>
     </div>` + document.getElementById('list').innerHTML
     })
