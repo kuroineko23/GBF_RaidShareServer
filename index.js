@@ -38,8 +38,9 @@ app.post('/sendcode', authMiddleware, async (req, res) => {
     if(code.match(regex) && code.length == 8)
     {
         const cacheResult = await redisClient.get(code)
+        console.log("cacheResult " + cacheResult)
         if(cacheResult) {
-            
+            console.log("Key exist")
         } else {
             await redisClient.set(code , "", {EX: 60*5})
             io.to(req.body.roomId).emit("message", req.body)
