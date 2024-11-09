@@ -3,6 +3,7 @@ const app = express();
 const http = require('http');
 const server = http.createServer(app);
 const { Server } = require("socket.io");
+const redis = require("redis");
 const io = new Server(server, {
     serveClient: false,
     path: '/socket'
@@ -18,14 +19,29 @@ var corsOptions = {
 
 app.use(express.json());
 app.use(cors(corsOptions));
+
+let redisClient;
+(async () => {
+    redisClient = redis.createClient();
+  
+    redisClient.on("error", (error) => console.error(`Error : ${error}`));
+  
+    await redisClient.connect();
+  })();
+
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
-app.post('/sendcode', authMiddleware, (req, res) => {
+app.post('/sendcode', authMiddleware, async (req, res) => {
+    var code = req.body.code;
     var regex = new RegExp("[A-F0-9]+");
-    if(req.body.code.match(regex) && req.body.code.length == 8)
+    if(code.match(regex) && code.length == 8)
     {
-        io.to(req.body.roomId).emit("message", req.body)
+        const cacheResult = await redisClient.get(code)
+        if(!cacheResult) {
+            await client.set(key , value, {EX: 60*5})
+            io.to(req.body.roomId).emit("message", req.body)
+        }
         res.sendStatus(200);
     }
     else
