@@ -22,10 +22,9 @@
 
     socket.on("message", (arg) => {
       document.getElementById('list').innerHTML = `<div class="card w-96 bg-base-300 shadow-xl mb-4">
-      <a onclick="copyURI(this.name)" href="#" name="` + arg.raid_code + `">
+      <a onclick="copyURI(this.name)" href="#" name="` + arg.code + `">
         <div class="card-body">
-          <h2 class="card-title" id="card-title-id">` + arg.raid_code + `</h2>
-          <p id="card-desc-id">` + arg.raid_name + ` - ` + arg.health_remaining + `</p>
+          <h2 class="card-title" id="card-title-id">` + arg.code + `</h2>
         </div>
       </a>
     </div>` + document.getElementById('list').innerHTML

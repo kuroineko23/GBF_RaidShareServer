@@ -22,7 +22,7 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
 app.post('/sendcode', authMiddleware, (req, res) => {
-    io.to(req.body.roomId).emit("message", req.body.code)
+    io.to(req.body.roomId).emit("message", req.body)
     res.sendStatus(200)
 })
 
