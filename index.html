@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
-  <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.socket.io/4.8.0/socket.io.min.js" integrity="sha384-OoIbkvzsFFQAG88r+IqMAjyOtYDPGO0cqK5HF5Uosdy/zUEGySeAzytENMDynREd" crossorigin="anonymous"></script>
   <script>
     var socket = io('https://gbf.nekorinsoft.com/', {
@@ -23,8 +22,8 @@
     socket.on("message", (arg) => {
       document.getElementById('list').innerHTML = `<div class="card w-96 bg-base-300 shadow-xl mb-4">
       <a onclick="copyURI(this.name)" href="#" name="` + arg.code + `">
-        <div class="card-body">
-          <h2 class="card-title" id="card-title-id">` + arg.code + `</h2>
+        <div style="border: 1px solid black">
+          <h2>` + arg.code + `</h2>
         </div>
       </a>
     </div>` + document.getElementById('list').innerHTML
@@ -38,10 +37,6 @@
     <div class="flex">
       <input type="text" placeholder="Room ID" id="room-id" class="input input-bordered w-full max-w-xs me-2" />
       <button class="btn btn-neutral" onclick="changeRoom()">Change</button>
-    </div>
-    <div>
-
-      <input type="checkbox" value="light" class="toggle theme-controller" />
     </div>
   </div>
   <div id="list">
