@@ -22,8 +22,8 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
 app.post('/sendcode', authMiddleware, (req, res) => {
-    var regex = new RegExp("[A-F0-9]");
-    if(req.body.code.match(regex))
+    var regex = new RegExp("[A-F0-9]+");
+    if(req.body.code.match(regex) && req.body.code.length == 8)
     {
         io.to(req.body.roomId).emit("message", req.body)
         res.sendStatus(200);
