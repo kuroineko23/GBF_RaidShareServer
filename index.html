@@ -9,6 +9,7 @@
     var socket = io('https://gbf.nekorinsoft.com/', {
       path: '/socket'
     });
+    document.getElementById("current-room").value = "public";
     function copyURI(value) {
       navigator.clipboard.writeText(value).then(() => {
       }).catch((e) => {
@@ -16,8 +17,12 @@
       })
     }
 
-    function changeRoom() {
-      socket.emit("join", document.getElementById("room-id").value)
+    function changeRoom(room) {
+      if(!room) {
+        room = document.getElementById("room-id").value
+      }
+      socket.emit("join", room)
+      document.getElementById("current-room").value = document.getElementById("room-id").value
       document.getElementById('list').innerHTML = ""
     }
 
@@ -32,6 +37,8 @@
       </a>
     </div>` + document.getElementById('list').innerHTML
     })
+
+    changeRoom()
   </script>
   <title>Granblue Fantasy Raid Finder</title>
 </head>
@@ -39,6 +46,7 @@
 <body>
   <marquee direction="left">this web is sponsored by no one. please fucking help</marquee>
   <div>
+    <div>Current room: <span id="current-room"></span></div>
     <div>
       <input type="text" placeholder="Room ID" id="room-id" style="width: 10vw; margin-bottom: 1vh" />
       <button class="btn btn-neutral" onclick="changeRoom()">Change</button>
