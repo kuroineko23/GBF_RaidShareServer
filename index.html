@@ -21,6 +21,10 @@
       document.getElementById('list').innerHTML = ""
     }
 
+    function clearList() {
+      document.getElementById('list').innerHTML = ""
+    }
+
     socket.on("message", (arg) => {
       document.getElementById('list').innerHTML = `<div style="width: 10vw; margin-bottom: 1vh">
       <a onclick="copyURI(this.name)" href="#" name="` + arg.code + `" style="width: 10vw">
@@ -38,6 +42,7 @@
     <div>
       <input type="text" placeholder="Room ID" id="room-id" style="width: 10vw; margin-bottom: 1vh" />
       <button class="btn btn-neutral" onclick="changeRoom()">Change</button>
+      <button onclick="clearList">Clear List</button>
     </div>
   </div>
   <div id="list">
