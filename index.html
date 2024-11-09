@@ -9,7 +9,6 @@
     var socket = io('https://gbf.nekorinsoft.com/', {
       path: '/socket'
     });
-    document.getElementById("current-room").value = "public";
     function copyURI(value) {
       navigator.clipboard.writeText(value).then(() => {
       }).catch((e) => {
@@ -37,8 +36,6 @@
       </a>
     </div>` + document.getElementById('list').innerHTML
     })
-
-    changeRoom()
   </script>
   <title>Granblue Fantasy Raid Finder</title>
 </head>
@@ -55,6 +52,10 @@
   </div>
   <div id="list">
   </div>
+  <script>
+    document.getElementById("current-room").value = "public";
+    changeRoom("public")
+  </script>
 </body>
 
 </html>
