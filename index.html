@@ -2,7 +2,9 @@
 <html lang="en">
 
 <head>
-  <script src="https://cdn.socket.io/4.8.0/socket.io.min.js" integrity="sha384-OoIbkvzsFFQAG88r+IqMAjyOtYDPGO0cqK5HF5Uosdy/zUEGySeAzytENMDynREd" crossorigin="anonymous"></script>
+  <script src="https://cdn.socket.io/4.8.0/socket.io.min.js"
+    integrity="sha384-OoIbkvzsFFQAG88r+IqMAjyOtYDPGO0cqK5HF5Uosdy/zUEGySeAzytENMDynREd"
+    crossorigin="anonymous"></script>
   <script>
     var socket = io('https://gbf.nekorinsoft.com/', {
       path: '/socket'
@@ -22,9 +24,7 @@
     socket.on("message", (arg) => {
       document.getElementById('list').innerHTML = `<div style="width: 10vw; margin-bottom: 1vh">
       <a onclick="copyURI(this.name)" href="#" name="` + arg.code + `" style="width: 10vw">
-        <div style="border: 1px solid black">
           <h3>` + arg.code + `</h3>
-        </div>
       </a>
     </div>` + document.getElementById('list').innerHTML
     })
@@ -32,10 +32,10 @@
   <title>Granblue Fantasy Raid Finder</title>
 </head>
 
-<body class="p-10">
-  <div class="mb-4 flex justify-between">
-    <div class="flex">
-      <input type="text" placeholder="Room ID" id="room-id" class="input input-bordered w-full max-w-xs me-2" />
+<body>
+  <div>
+    <div>
+      <input type="text" placeholder="Room ID" id="room-id" style="width: 10vw; margin-bottom: 1vh" />
       <button class="btn btn-neutral" onclick="changeRoom()">Change</button>
     </div>
   </div>
