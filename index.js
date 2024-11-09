@@ -40,11 +40,6 @@ io.on("connection", async (socket) => {
     })
 });
 
-
-server.listen(8000, () => {
-    console.log('Socket.io listeing on :8000');
-});
-
 app.listen(3000, () => {
-    console.log(`Web page listening on :3000`)
+    console.log(`listening on :3000`)
 })
