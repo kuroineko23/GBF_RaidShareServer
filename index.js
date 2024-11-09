@@ -39,7 +39,7 @@ app.post('/sendcode', authMiddleware, async (req, res) => {
     {
         const cacheResult = await redisClient.get(code)
         if(!cacheResult) {
-            await redisClient.set(key , value, {EX: 60*5})
+            await redisClient.set(code , "", {EX: 60*5})
             io.to(req.body.roomId).emit("message", req.body)
         }
         res.sendStatus(200);
