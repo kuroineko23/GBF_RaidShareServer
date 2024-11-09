@@ -3,7 +3,7 @@ const app = express();
 const http = require('http');
 const server = http.createServer(app);
 const { Server } = require("socket.io");
-const io = new Server({
+const io = new Server(server, {
     serveClient: false,
     path: '/socket'
   });
@@ -40,6 +40,6 @@ io.on("connection", async (socket) => {
     })
 });
 
-app.listen(3000, () => {
+server.listen(3000, () => {
     console.log(`listening on :3000`)
 })
