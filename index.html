@@ -19,9 +19,9 @@
     function changeRoom(room) {
       if(!room) {
         room = document.getElementById("room-id").value
+        document.getElementById("current-room").textContent = document.getElementById("room-id").value
       }
       socket.emit("join", room)
-      document.getElementById("current-room").textContent = document.getElementById("room-id").value
       document.getElementById('list').innerHTML = ""
     }
 
