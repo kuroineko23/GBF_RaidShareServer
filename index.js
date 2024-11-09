@@ -41,7 +41,9 @@ app.post('/sendcode', authMiddleware, async (req, res) => {
             if(err) {
                 console.error(err);
             } else {
-                if(reply !== 1) {
+                if(reply === 1) {
+                    console.log("Key exist: " + code)
+                } else {
                     await redisClient.set(code , "", {EX: 60*5})
                     io.to(req.body.roomId).emit("message", req.body)
                 }
