@@ -20,10 +20,10 @@
     }
 
     socket.on("message", (arg) => {
-      document.getElementById('list').innerHTML = `<div class="card w-96 bg-base-300 shadow-xl mb-4">
-      <a onclick="copyURI(this.name)" href="#" name="` + arg.code + `">
+      document.getElementById('list').innerHTML = `<div style="width: 10vw; margin-bottom: 1vh">
+      <a onclick="copyURI(this.name)" href="#" name="` + arg.code + `" style="width: 10vw">
         <div style="border: 1px solid black">
-          <h2>` + arg.code + `</h2>
+          <h3>` + arg.code + `</h3>
         </div>
       </a>
     </div>` + document.getElementById('list').innerHTML
