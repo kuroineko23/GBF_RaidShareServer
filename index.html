@@ -21,7 +21,7 @@
         room = document.getElementById("room-id").value
       }
       socket.emit("join", room)
-      document.getElementById("current-room").innerText = document.getElementById("room-id").value
+      document.getElementById("current-room").textContent = document.getElementById("room-id").value
       document.getElementById('list').innerHTML = ""
     }
 
@@ -53,7 +53,7 @@
   <div id="list">
   </div>
   <script>
-    document.getElementById("current-room").innerText = "public";
+    document.getElementById("current-room").textContent = "public";
     changeRoom("public")
   </script>
 </body>
