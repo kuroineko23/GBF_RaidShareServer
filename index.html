@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.10.1/dist/full.min.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    var socket = io('https://gbf.nekorinsoft.com');
+    function copyURI(value) {
+      navigator.clipboard.writeText(value).then(() => {
+      }).catch((e) => {
+        console.log(e)
+      })
+    }
+
+    function changeRoom() {
+      socket.emit("join", document.getElementById("room-id").value)
+      document.getElementById('list').innerHTML = ""
+    }
+
+    socket.on("message", (arg) => {
+      document.getElementById('list').innerHTML = `<div class="card w-96 bg-base-300 shadow-xl mb-4">
+      <a onclick="copyURI(this.name)" href="#" name="` + arg.raid_code + `">
+        <div class="card-body">
+          <h2 class="card-title" id="card-title-id">` + arg.raid_code + `</h2>
+          <p id="card-desc-id">` + arg.raid_name + ` - ` + arg.health_remaining + `</p>
+        </div>
+      </a>
+    </div>` + document.getElementById('list').innerHTML
+    })
+  </script>
+  <title>Granblue Fantasy Raid Finder</title>
+</head>
+
+<body class="p-10">
+  <div class="mb-4 flex justify-between">
+    <div class="flex">
+      <input type="text" placeholder="Room ID" id="room-id" class="input input-bordered w-full max-w-xs me-2" />
+      <button class="btn btn-neutral" onclick="changeRoom()">Change</button>
+    </div>
+    <div>
+
+      <input type="checkbox" value="light" class="toggle theme-controller" />
+    </div>
+  </div>
+  <div id="list">
+  </div>
+</body>
+
+</html>
