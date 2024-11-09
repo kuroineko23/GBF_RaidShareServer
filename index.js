@@ -37,11 +37,16 @@ app.post('/sendcode', authMiddleware, async (req, res) => {
     var regex = new RegExp("[A-F0-9]+");
     if(code.match(regex) && code.length == 8)
     {
-        const cacheResult = await redisClient.get(code)
-        if(!cacheResult) {
-            await redisClient.set(code , "", {EX: 60*5})
-            io.to(req.body.roomId).emit("message", req.body)
-        }
+        redisClient.exists(code, async (err, reply) => {
+            if(err) {
+                console.error(err);
+            } else {
+                if(reply !== 1) {
+                    await redisClient.set(code , "", {EX: 60*5})
+                    io.to(req.body.roomId).emit("message", req.body)
+                }
+            }
+        });
         res.sendStatus(200);
     }
     else
