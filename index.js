@@ -26,14 +26,14 @@ app.use(function (err, req, res, next) {
         'message': err.message
     });
 });
-// let redisClient;
-// (async () => {
-//     redisClient = redis.createClient();
+let redisClient;
+(async () => {
+    redisClient = redis.createClient();
 
-//     redisClient.on("error", (error) => console.error(`Error : ${error}`));
+    redisClient.on("error", (error) => console.error(`Error : ${error}`));
 
-//     await redisClient.connect();
-// })();
+    await redisClient.connect();
+})();
 
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
