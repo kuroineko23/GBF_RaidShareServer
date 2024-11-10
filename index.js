@@ -7,7 +7,7 @@ const redis = require("redis");
 const io = new Server(server, {
     serveClient: false,
     path: '/socket'
-  });
+});
 const cors = require('cors');
 const { authMiddleware } = require('./auth');
 
@@ -19,49 +19,45 @@ var corsOptions = {
 
 app.use(express.json());
 app.use(cors(corsOptions));
-app.use(function(err, req, res, next) {
-    // Maybe log the error for later reference?
-    // If this is development, maybe show the stack here in this response?
+app.use(function (err, req, res, next) {
     console.log(err)
-	res.status(err.status || 500);
+    res.status(err.status || 500);
     res.send({
         'message': err.message
     });
 });
-let redisClient;
-(async () => {
-    redisClient = redis.createClient();
-  
-    redisClient.on("error", (error) => console.error(`Error : ${error}`));
-  
-    await redisClient.connect();
-  })();
+// let redisClient;
+// (async () => {
+//     redisClient = redis.createClient();
+
+//     redisClient.on("error", (error) => console.error(`Error : ${error}`));
+
+//     await redisClient.connect();
+// })();
 
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
+app.use(express.static(__dirname + '/css/'));
 app.post('/sendcode', authMiddleware, async (req, res) => {
     var code = req.body.code;
     var regex = new RegExp("[A-F0-9]+");
-	if (typeof code === "string" || code instanceof String)
-	{
-    if(code.match(regex) && code.length == 8)
-    {
-        const cacheResult = await redisClient.get(code)
-        console.log("cacheResult " + cacheResult)
-        if(cacheResult) {
-            console.log("Key exist")
-        } else {
-            await redisClient.set(code , "exist", {EX: 60*5})
-            io.to(req.body.roomId).emit("message", req.body)
+    if (typeof code === "string" || code instanceof String) {
+        if (code.match(regex) && code.length == 8) {
+            const cacheResult = await redisClient.get(code)
+            console.log("cacheResult " + cacheResult)
+            if (cacheResult) {
+                console.log("Key exist")
+            } else {
+                await redisClient.set(code, "exist", { EX: 60 })
+                io.to(req.body.roomId).emit("message", req.body)
+            }
+            res.sendStatus(200);
         }
-        res.sendStatus(200);
+        else {
+            res.send("not a raid code");
+        }
     }
-    else
-    {
-        res.send("not a raid code");
-    }
-}
 })
 
 io.on("connection", async (socket) => {
