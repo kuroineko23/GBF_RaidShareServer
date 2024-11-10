@@ -31,7 +31,7 @@
     }
 
     socket.on("message", (arg) => {
-      document.getElementById('list').innerHTML = `<tr class="hover border">
+      document.getElementById('list').innerHTML = `<tr class="hover">
       <a onclick="copyURI(this.name)" href="#" name="` + arg.code + `" style="width: 10vw">
           <div class="text-lg">` + arg.code + `</div><div class="text-lg"><sup>` + arg.nickname + `</sup></div>
       </a>
@@ -73,7 +73,10 @@
     </div>
   </div>
   <div class="overflow-x-auto">
-    <table class="table" id="list">
+    <table class="table">
+      <tbody id="list">
+        
+      </tbody>
     </table>
   </div>
   <script>
