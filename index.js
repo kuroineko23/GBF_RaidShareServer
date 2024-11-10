@@ -45,7 +45,6 @@ app.post('/sendcode', authMiddleware, async (req, res) => {
     if (typeof code === "string" || code instanceof String) {
         if (code.match(regex) && code.length == 8) {
             const cacheResult = await redisClient.get(code)
-            console.log("cacheResult " + cacheResult)
             if (cacheResult) {
             } else {
                 await redisClient.set(code, "exist", { EX: 60 })
