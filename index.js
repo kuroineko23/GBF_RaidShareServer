@@ -47,7 +47,6 @@ app.post('/sendcode', authMiddleware, async (req, res) => {
             const cacheResult = await redisClient.get(code)
             console.log("cacheResult " + cacheResult)
             if (cacheResult) {
-                console.log("Key exist")
             } else {
                 await redisClient.set(code, "exist", { EX: 60 })
                 io.to(req.body.roomId).emit("message", req.body)
@@ -66,11 +65,9 @@ io.on("connection", async (socket) => {
             var it = socket.rooms.keys()
             it.next()
             var room = it.next()
-            console.log(socket.id + ' leaving room ' + room.value)
             socket.leave(room.value)
         }
         socket.join(arg)
-        console.log(socket.id + ' joined room ' + arg);
     })
 });
 
