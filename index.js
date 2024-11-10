@@ -19,7 +19,15 @@ var corsOptions = {
 
 app.use(express.json());
 app.use(cors(corsOptions));
-
+app.use(function(err, req, res, next) {
+    // Maybe log the error for later reference?
+    // If this is development, maybe show the stack here in this response?
+    console.log(err)
+	res.status(err.status || 500);
+    res.send({
+        'message': err.message
+    });
+});
 let redisClient;
 (async () => {
     redisClient = redis.createClient();
@@ -35,6 +43,8 @@ app.get('/', (req, res) => {
 app.post('/sendcode', authMiddleware, async (req, res) => {
     var code = req.body.code;
     var regex = new RegExp("[A-F0-9]+");
+	if (typeof code === "string" || code instanceof String)
+	{
     if(code.match(regex) && code.length == 8)
     {
         const cacheResult = await redisClient.get(code)
@@ -51,6 +61,7 @@ app.post('/sendcode', authMiddleware, async (req, res) => {
     {
         res.send("not a raid code");
     }
+}
 })
 
 io.on("connection", async (socket) => {
