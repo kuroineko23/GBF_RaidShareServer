@@ -25,7 +25,9 @@
     function hotkeyCopy(e) {
       if (e.key === hotkey) {
         event.preventDefault();
-        copyURI(codeList[0])
+        if (codeList.length > 0) {
+          copyURI(codeList[0])
+        }
       }
     }
 
