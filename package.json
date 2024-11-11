@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.19.2",
+    "express-requests-logger": "^4.0.1",
     "lru-cache": "^11.0.2",
     "socket.io": "^4.7.5"
   },

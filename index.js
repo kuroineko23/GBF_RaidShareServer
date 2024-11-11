@@ -16,6 +16,7 @@ const cache = new LRUCache({
     updateAgeOnGet: false,
     updateAgeOnHas: false,
 });
+const audit = require('express-requests-logger')
 
 var corsOptions = {
     origin: '*',
@@ -24,6 +25,9 @@ var corsOptions = {
 }
 
 app.use(express.json());
+app.use(audit({
+    doubleAudit: true
+}))
 app.use(cors(corsOptions));
 app.use(function (err, req, res, next) {
     console.log(err)
