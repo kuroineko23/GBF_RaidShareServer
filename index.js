@@ -29,6 +29,9 @@ app.use(audit({
     doubleAudit: false,
     request: {
         excludeHeaders: ["*"]
+    },
+    response: {
+        audit: false
     }
 }))
 app.use(cors(corsOptions));
