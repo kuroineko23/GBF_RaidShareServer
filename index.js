@@ -28,7 +28,7 @@ app.use(express.json());
 app.use(audit({
     doubleAudit: false,
     request: {
-        excludeHeaders: "*"
+        excludeHeaders: ["*"]
     }
 }))
 app.use(cors(corsOptions));
