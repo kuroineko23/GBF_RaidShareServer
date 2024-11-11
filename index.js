@@ -3,7 +3,7 @@ const app = express();
 const http = require('http');
 const server = http.createServer(app);
 const { Server } = require("socket.io");
-const LRU = require('lru-cache');
+const { LRUCache } = require('lru-cache');
 const io = new Server(server, {
     serveClient: false,
     path: '/socket'
