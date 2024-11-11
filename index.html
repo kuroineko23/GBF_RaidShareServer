@@ -17,17 +17,27 @@
       })
     }
 
+    var codeList = [];
+
+    function hotkeyCopy(e) {
+      if (e.key === "5") {
+	event.preventDefault();
+	copyURI(codeList[0])
+		}
+	      }
+	  document.addEventListener("keydown", hotkeyCopy);
     function changeRoom(room) {
       if (!room) {
         room = document.getElementById("room-id").value
         document.getElementById("current-room").textContent = document.getElementById("room-id").value
       }
       socket.emit("join", room)
-      document.getElementById('list').innerHTML = ""
+      clearList();
     }
 
     function clearList() {
       document.getElementById('list').innerHTML = ""
+      codeList = [];
     }
 
     socket.on("message", (arg) => {
@@ -36,6 +46,7 @@
           <div class="text-lg">` + arg.code + `</div><div class="text-lg"><sup>` + arg.nickname + `</sup></div>
       </a>
     </td></tr>` + document.getElementById('list').innerHTML
+      codeList.unshift(arg.code)
     })
   </script>
   <title>Granblue Fantasy Raid Finder</title>
