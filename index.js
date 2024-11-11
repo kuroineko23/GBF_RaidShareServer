@@ -3,13 +3,19 @@ const app = express();
 const http = require('http');
 const server = http.createServer(app);
 const { Server } = require("socket.io");
-const redis = require("redis");
+const LRU = require('lru-cache');
 const io = new Server(server, {
     serveClient: false,
     path: '/socket'
 });
 const cors = require('cors');
 const { authMiddleware } = require('./auth');
+const cache = new LRU({
+    max: 10,
+    ttl: 1000 * 60,
+    updateAgeOnGet: false,
+    updateAgeOnHas: false,
+});
 
 var corsOptions = {
     origin: '*',
@@ -26,14 +32,6 @@ app.use(function (err, req, res, next) {
         'message': err.message
     });
 });
-let redisClient;
-(async () => {
-    redisClient = redis.createClient();
-
-    redisClient.on("error", (error) => console.error(`Error : ${error}`));
-
-    await redisClient.connect();
-})();
 
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
@@ -44,16 +42,14 @@ app.post('/sendcode', authMiddleware, async (req, res) => {
     var regex = new RegExp("[A-F0-9]+");
     if (typeof code === "string" || code instanceof String) {
         if (code.match(regex) && code.length == 8) {
-            const cacheResult = await redisClient.get(code)
-            if (cacheResult) {
-            } else {
-                await redisClient.set(code, "exist", { EX: 60 })
+            if (!cache.has(code)) {
+                cache.set(code, "exist");
                 io.to(req.body.roomId).emit("message", req.body)
             }
             res.sendStatus(200);
         }
         else {
-            res.send("not a raid code");
+            res.send("Not a raid code");
         }
     }
 })

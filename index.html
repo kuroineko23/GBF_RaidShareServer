@@ -7,9 +7,14 @@
     crossorigin="anonymous"></script>
   <link href="tailwind.css" rel="stylesheet">
   <script>
+    //variable list
     var socket = io('https://gbf.nekorinsoft.com/', {
       path: '/socket'
     });
+    var hotkey = "5";
+    var codeList = [];
+
+    //function list
     function copyURI(value) {
       navigator.clipboard.writeText(value).then(() => {
       }).catch((e) => {
@@ -17,19 +22,24 @@
       })
     }
 
-    var codeList = [];
-
     function hotkeyCopy(e) {
-      if (e.key === "5") {
-	event.preventDefault();
-	copyURI(codeList[0])
-		}
-	      }
-	  document.addEventListener("keydown", hotkeyCopy);
+      if (e.key === hotkey) {
+        event.preventDefault();
+        copyURI(codeList[0])
+      }
+    }
+
+    function setHotkey() {
+      hotkey = document.getElementById("hotkey").value
+      document.getElementById("current-hotkey").textContent = hotkey;
+    }
+
     function changeRoom(room) {
       if (!room) {
-        room = document.getElementById("room-id").value
-        document.getElementById("current-room").textContent = document.getElementById("room-id").value
+        room = document.getElementById("room-id").value;
+        document.getElementById("current-room").textContent = document.getElementById("room-id").value;
+      } else {
+        document.getElementById("current-room").textContent = room;
       }
       socket.emit("join", room)
       clearList();
@@ -48,18 +58,22 @@
     </td></tr>` + document.getElementById('list').innerHTML
       codeList.unshift(arg.code)
     })
+
+    //listener list
+    document.addEventListener("keydown", hotkeyCopy);
+
+    //initialize
+    changeRoom("public");
+
   </script>
   <title>Granblue Fantasy Raid Finder</title>
 </head>
 
 <body class="mx-2 mt-1">
   <div class="flex mb-2">
-    <marquee direction="left">Have you heard of the critically acclaimed MMORPG Final Fantasy XIV? With an expanded free
-      trial which you can play through the entirety of A Realm Reborn and the award-winning Stormblood expansion up to
-      level 70 for free with no restrictions on playtime!</marquee>
+    <marquee direction="left">https://ko-fi.com/shiori23 || https://github.com/kuroineko23</marquee>
   </div>
   <div class="flex justify-between mb-2">
-    <div class="">Room <span id="current-room">public</span></div>
     <div>
       <label class="flex cursor-pointer gap-2">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
@@ -76,24 +90,26 @@
       </label>
     </div>
   </div>
-  <div class="mb-2">
+  <div class="mb-2 flex justify-between">
     <div>
-      <input type="text" placeholder="public" id="room-id" class="input input-bordered" />
+      <div>Room <span id="current-room">public</span></div>
+      <input type="text" placeholder="public" value="public" id="room-id" class="input input-bordered" />
       <button class="btn btn-primary" onclick="changeRoom()">Change</button>
       <button class="btn btn-neutral" onclick="clearList()">Clear List</button>
+    </div>
+    <div>
+      <div>Current Hotkey: <span id="current-hotkey">5</span></div>
+      <input type="text" placeholder="5" value="5" id="hotkey" class="input input-bordered" />
+      <button class="btn btn-primary" onclick="setHotkey()">Set Hotkey</button>
     </div>
   </div>
   <div class="overflow-x-auto">
     <table class="table">
       <tbody id="list">
-        
+
       </tbody>
     </table>
   </div>
-  <script>
-    document.getElementById("current-room").textContent = "public";
-    changeRoom("public")
-  </script>
 </body>
 
 </html>
