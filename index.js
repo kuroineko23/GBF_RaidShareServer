@@ -10,7 +10,7 @@ const io = new Server(server, {
 });
 const cors = require('cors');
 const { authMiddleware } = require('./auth');
-const cache = new LRU({
+const cache = new LRUCache({
     max: 10,
     ttl: 1000 * 60,
     updateAgeOnGet: false,
