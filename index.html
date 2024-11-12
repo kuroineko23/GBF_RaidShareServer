@@ -57,7 +57,7 @@
       <a onclick="copyURI(this.name)" href="#" name="` + arg.code + `" style="width: 10vw">
           <div class="text-lg">` + arg.code + `</div><div class="text-lg"><sup>` + arg.nickname + `</sup></div>
       </a>
-    </td></tr>` + document.getElementById('list').innerHTML
+	 </td><td>` + new Date().toLocaleTimeString() + `</td></tr>` + document.getElementById('list').innerHTML
       codeList.unshift(arg.code)
     })
 
